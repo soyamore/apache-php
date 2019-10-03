@@ -28,7 +28,7 @@ RUN apt-get clean && apt-get update && apt-cache search php-mysql && apt-get ins
   libmcrypt-dev \
   libxml2-dev \
   libxslt1-dev \
-  mysql-client \
+  mariadb-client \
   zip \
   wget \
   linux-libc-dev \
