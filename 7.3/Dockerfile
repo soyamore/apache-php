@@ -20,9 +20,6 @@ RUN apt-get clean && apt-get update && apt-cache search php-mysql && apt-get ins
   sudo \
   git \
   vim \
-  memcached \
-  libmemcached-tools \
-  libmemcached-dev \
   libpng-dev \
   libjpeg62-turbo-dev \
   libmcrypt-dev \
@@ -43,12 +40,6 @@ RUN apt-get clean && apt-get update && apt-cache search php-mysql && apt-get ins
 
 # postgresql-client-9.5
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && echo "deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main" >> /etc/apt/sources.list && apt-get update && apt-get install -y postgresql-client-9.5
-
-# Install memcached for PHP 7
-RUN cd /tmp && git clone https://github.com/php-memcached-dev/php-memcached.git
-RUN cd /tmp/php-memcached && sudo git checkout php7 && phpize && ./configure --disable-memcached-sasl && make && make install
-RUN touch /usr/local/etc/php/conf.d/memcached.ini &&\
- echo "extension=/usr/local/lib/php/extensions/no-debug-non-zts-20170718/memcached.so" >> /usr/local/etc/php/conf.d/memcached.ini
 
 COPY docker-php-ext-install /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-php-ext-install
@@ -89,7 +80,6 @@ RUN pecl install yaml-2.0.2 && echo "extension=yaml.so" > /usr/local/etc/php/con
 # Install APCu extension
 RUN pecl install apcu-5.1.8
 
-COPY core/memcached.conf /etc/memcached.conf
 
 # Install sass and gem dependency
 RUN apt-get install --fix-missing automake ruby2.3-dev libtool -y
